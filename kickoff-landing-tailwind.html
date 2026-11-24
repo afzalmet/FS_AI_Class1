@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-20">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KICKOFF BD — Football Sportswear Shop | Jerseys, Boots & Gear, Delivered Nationwide</title>
+<meta name="description" content="Football jerseys, boots and gear for fans and players across Bangladesh. Custom name & number printing, team kits, cash on delivery in all 64 districts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Hind+Siliguri:wght@400;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind CSS v4 (browser build) -->
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+<style type="text/tailwindcss">
+/* =========================================================
+   EDIT HERE: brand colours & fonts → become Tailwind classes
+   e.g. bg-night, text-chalk, bg-brand-red, text-brand-yellow, font-display
+   ========================================================= */
+@theme {
+  --color-night: #04120c;
+  --color-night2: #071c13;
+  --color-pitch: #0b4d33;
+  --color-pitch2: #0f5f3f;
+  --color-chalk: #f5f3ea;
+  --color-muted: #9fb9ab;
+  --color-card: #0a2419;
+  --color-line: rgb(245 243 234 / 0.12);
+  --color-brand-red: #ff3348;
+  --color-brand-yellow: #ffd23f;
+  --color-whatsapp: #25d366;
+
+  --font-display: 'Anton', 'Hind Siliguri', Impact, 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', 'Hind Siliguri', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-bangla: 'Hind Siliguri', 'Inter', sans-serif;
+
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-bounce-ball: bounce-ball 1.6s cubic-bezier(.5,0,.5,1) infinite;
+  --animate-ball-shadow: ball-shadow 1.6s cubic-bezier(.5,0,.5,1) infinite;
+  --animate-spin-slow: spin 3.2s linear infinite;
+  --animate-marquee: marquee 32s linear infinite;
+  --animate-pass: pass 4s ease-in-out infinite;
+  --animate-ping-slow: ping-ring 2s ease-out infinite;
+  --animate-cue: cue 1.6s ease infinite;
+
+  @keyframes float { 0%,100% { transform: translateY(0) rotate(-2deg) } 50% { transform: translateY(-14px) rotate(1deg) } }
+  @keyframes bounce-ball { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-70%) } }
+  @keyframes ball-shadow { 0%,100% { transform: scale(1); opacity: .8 } 50% { transform: scale(.55); opacity: .35 } }
+  @keyframes marquee { to { transform: translateX(-50%) } }
+  @keyframes pass { 0% { left: 0 } 45%,55% { left: 50% } 100% { left: 100% } }
+  @keyframes ping-ring { to { transform: scale(1.6); opacity: 0 } }
+  @keyframes cue { 0% { transform: translateY(0); opacity: 1 } 80% { transform: translateY(12px); opacity: 0 } 100% { opacity: 0 } }
+}
+
+/* ---------- Custom utilities (pitch patterns & effects) ---------- */
+@utility bg-stripes { background: repeating-linear-gradient(90deg, var(--color-pitch) 0 90px, var(--color-pitch2) 90px 180px); }
+@utility bg-stripes-sm { background: radial-gradient(circle at 50% 40%, rgb(245 243 234 / .10), transparent 65%), repeating-linear-gradient(90deg, #0b3a27 0 40px, #0d4330 40px 80px); }
+@utility bg-stadium {
+  background:
+    radial-gradient(ellipse 60% 50% at 15% -10%, rgb(255 255 230 / .16), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 85% -10%, rgb(255 255 230 / .16), transparent 60%),
+    linear-gradient(180deg, rgb(4 18 12 / .25), var(--color-night) 96%),
+    repeating-linear-gradient(90deg, #0a3f2a 0 110px, #0c4a31 110px 220px);
+}
+@utility bg-offer { background: linear-gradient(115deg, #b0122a 0%, var(--color-brand-red) 45%, #ff6a3d 100%); }
+@utility text-stroke { color: transparent; -webkit-text-stroke: 2px var(--color-chalk); }
+@utility led-glow { text-shadow: 0 0 10px rgb(255 210 63 / .55); }
+
+/* ---------- Small reusable components ---------- */
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6.5 py-3.5 font-bold whitespace-nowrap transition duration-300 hover:-translate-y-1; }
+  .btn svg { @apply size-5; }
+  .btn-red { @apply bg-brand-red text-white shadow-[0_10px_30px_-8px_rgb(255_51_72/.6)] hover:shadow-[0_16px_36px_-8px_rgb(255_51_72/.75)]; }
+  .btn-ghost { @apply border-2 border-chalk/35 hover:border-chalk; }
+  .eyebrow { @apply inline-flex items-center gap-2.5 text-xs font-bold tracking-[.22em] uppercase text-brand-yellow before:h-0.5 before:w-7 before:bg-brand-yellow before:content-['']; }
+  .title { @apply font-display text-[clamp(2.3rem,5.2vw,4rem)] leading-none uppercase mt-3.5 mb-4; }
+  .title em { @apply not-italic text-brand-red; }
+  .lead { @apply text-muted max-w-xl text-[1.05rem]; }
+}
+
+/* ---------- Animation states toggled by the script ---------- */
+@layer components {
+  /* Opening animation */
+  #loader .half { transition: transform .9s cubic-bezier(.77,0,.18,1); }
+  #loader .lights span { opacity: 0; }
+  #loader.s1 .lights span { animation: flicker .7s steps(1) forwards; }
+  #loader.s1 .lights span:nth-child(2) { animation-delay: .12s }
+  #loader.s1 .lights span:nth-child(3) { animation-delay: .24s }
+  #loader.s1 .lights span:nth-child(4) { animation-delay: .32s }
+  #loader .pitch-lines * { fill: none; stroke: rgb(245 243 234 / .85); stroke-width: 2; stroke-dasharray: 1400; stroke-dashoffset: 1400; }
+  #loader.s2 .pitch-lines * { transition: stroke-dashoffset 1.1s cubic-bezier(.6,0,.2,1); stroke-dashoffset: 0; }
+  #loader .lball { opacity: 0; transform: translate(-50%,-50%) translateX(-420%) rotate(-720deg); }
+  #loader.s2 .lball { animation: rollin 1s cubic-bezier(.25,.8,.3,1) .35s forwards; }
+  #loader .kick { opacity: 0; transform: scale(1.6); filter: blur(6px); }
+  #loader.s3 .kick { transition: all .45s cubic-bezier(.2,1.4,.4,1); opacity: 1; transform: scale(1); filter: none; }
+  #loader.done .stage, #loader.done .lights, #loader.done .skip { opacity: 0; transform: scale(.9); transition: opacity .35s ease, transform .5s ease; }
+  #loader.done .half-l { transform: translateX(-101%); }
+  #loader.done .half-r { transform: translateX(101%); }
+  @keyframes flicker { 0% {opacity:0} 20% {opacity:1} 35% {opacity:.2} 55% {opacity:1} 70% {opacity:.5} 100% {opacity:1} }
+  @keyframes rollin { 0% { opacity:1; transform: translate(-50%,-50%) translateX(-420%) rotate(-720deg) } 100% { opacity:1; transform: translate(-50%,-50%) translateX(0) rotate(0) } }
+
+  /* Pitch-wipe section transition */
+  #wipe { transform: translateX(-102%); }
+  #wipe:not(.in):not(.out) { visibility: hidden; }
+  #wipe.in { transform: translateX(0); transition: transform .55s cubic-bezier(.77,0,.18,1); }
+  #wipe.out { transform: translateX(102%); transition: transform .55s cubic-bezier(.77,0,.18,1); }
+
+  /* Hero headline rise */
+  .hero-line > span { display: inline-block; transform: translateY(110%); }
+  .ready .hero-line > span { transform: none; transition: transform .9s cubic-bezier(.2,.9,.2,1); }
+  .ready .hero-line:nth-child(2) > span { transition-delay: .1s }
+  .ready .hero-line:nth-child(3) > span { transition-delay: .2s }
+
+  /* Reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.9,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+}
+
+/* State styles: kept outside @layer so they win over the utility classes */
+  /* Header */
+  header.scrolled { @apply bg-night/80 backdrop-blur-md border-b border-line; }
+  header.scrolled .bar { @apply py-2.5; }
+  .nav-link.active { @apply text-chalk after:right-0; }
+
+  /* Mobile menu (circle reveal) */
+  @media (max-width: 860px) {
+    #nav { clip-path: circle(0 at calc(100% - 40px) 40px); transition: clip-path .6s cubic-bezier(.77,0,.18,1); }
+    #nav.open { clip-path: circle(150% at calc(100% - 40px) 40px); }
+  }
+  .burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg) }
+  .burger.open span:nth-child(2) { opacity: 0 }
+  .burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg) }
+
+  /* Filters, swatches, FAQ, mobile bar */
+  .filter.on { @apply bg-chalk text-neutral-900; }
+  .swatch.on { @apply border-night outline-brand-yellow scale-110; }
+  .qa .ans { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s ease; }
+  .qa.open .ans { grid-template-rows: 1fr; }
+  .qa.open .qa-icon { @apply bg-brand-red border-brand-red rotate-180; }
+  .qa.open .qa-icon::after { transform: translate(-50%,-50%) rotate(0); }
+  #mbar.show { translate: none; }
+
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+  .reveal, .hero-line > span { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body class="locked bg-night text-chalk font-body leading-relaxed antialiased overflow-x-hidden [&.locked]:overflow-hidden">
+
+<!-- =========== SVG ICON LIBRARY (reused below) =========== -->
+<svg width="0" height="0" class="absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ball" viewBox="0 0 100 100">
+      <clipPath id="ballClip"><circle cx="50" cy="50" r="46"/></clipPath>
+      <circle cx="50" cy="50" r="46" fill="#f7f7f2"/>
+      <g clip-path="url(#ballClip)" stroke="#1a1a1a" stroke-width="2.2" stroke-linejoin="round">
+        <polygon points="50.0,35.0 64.3,45.4 58.8,62.1 41.2,62.1 35.7,45.4" fill="#1a1a1a"/>
+        <polygon points="70.6,21.7 66.2,8.3 77.6,-0.0 89.0,8.3 84.7,21.7" fill="#1a1a1a"/>
+        <polygon points="83.3,60.8 94.7,52.5 106.1,60.8 101.8,74.2 87.6,74.2" fill="#1a1a1a"/>
+        <polygon points="50.0,85.0 61.4,93.3 57.1,106.7 42.9,106.7 38.6,93.3" fill="#1a1a1a"/>
+        <polygon points="16.7,60.8 12.4,74.2 -1.8,74.2 -6.1,60.8 5.3,52.5" fill="#1a1a1a"/>
+        <polygon points="29.4,21.7 15.3,21.7 11.0,8.3 22.4,-0.0 33.8,8.3" fill="#1a1a1a"/>
+        <path d="M50.0 35.0L50.0 21.0M50.0 21.0L70.6 21.7M50.0 21.0L29.4 21.7M64.3 45.4L77.6 41.0M77.6 41.0L83.3 60.8M77.6 41.0L70.6 21.7M58.8 62.1L67.0 73.5M67.0 73.5L50.0 85.0M67.0 73.5L83.3 60.8M41.2 62.1L33.0 73.5M33.0 73.5L16.7 60.8M33.0 73.5L50.0 85.0M35.7 45.4L22.4 41.0M22.4 41.0L29.4 21.7M22.4 41.0L16.7 60.8" fill="none"/>
+      </g>
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#1a1a1a" stroke-width="3"/>
+    </symbol>
+    <symbol id="wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.8 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3Z"/></symbol>
+    <symbol id="phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2Z"/></symbol>
+    <symbol id="check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="truck" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M1 4h14v12H1zM15 9h4l4 4v3h-8zM5.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3ZM18.5 19a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></symbol>
+    <symbol id="shirt" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M8 3 3 5.5 4.5 10 7 9v12h10V9l2.5 1L21 5.5 16 3c-.5 1.6-2 2.5-4 2.5S8.5 4.6 8 3Z"/></symbol>
+    <symbol id="medal" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7.2 2h9.6L14 8.5h-4zM12 22a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z M12 13l1 2 2 .3-1.5 1.4.4 2.1-1.9-1-1.9 1 .4-2.1L9 15.3l2-.3z"/></symbol>
+    <symbol id="team" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></symbol>
+    <symbol id="pin" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z M12 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></symbol>
+    <symbol id="clock" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20ZM12 6v6l4 2"/></symbol>
+    <symbol id="fb" viewBox="0 0 24 24"><path fill="currentColor" d="M14 8.5V6.8c0-.8.2-1.3 1.4-1.3H17V2.2C16.7 2.1 15.7 2 14.5 2 12 2 10.3 3.5 10.3 6.3v2.2H7.6v3.7h2.7V22H14v-9.8h2.7l.4-3.7Z"/></symbol>
+    <symbol id="ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm5 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm5.5-11.5h.01"/></symbol>
+    <symbol id="plus" viewBox="0 0 24 24"><path fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+  </defs>
+</svg>
+
+<!-- =========== OPENING ANIMATION =========== -->
+<div id="loader" class="fixed inset-0 z-[200] grid place-items-center overflow-hidden cursor-pointer [&.gone]:hidden" aria-hidden="true">
+  <div class="half half-l absolute inset-y-0 left-0 w-[50.5%] bg-[repeating-linear-gradient(90deg,#062a1c_0_70px,#08331f_70px_140px)] shadow-[inset_-2px_0_0_rgb(245_243_234/.5)]"></div>
+  <div class="half half-r absolute inset-y-0 right-0 w-[50.5%] bg-[repeating-linear-gradient(90deg,#062a1c_0_70px,#08331f_70px_140px)]"></div>
+  <div class="lights pointer-events-none absolute inset-0 z-[1] *:absolute *:size-[46vmax] *:rounded-full *:bg-[radial-gradient(circle,rgb(255_255_240/.22),transparent_60%)]">
+    <span class="-top-[26vmax] -left-[20vmax]"></span><span class="-top-[26vmax] -right-[20vmax]"></span>
+    <span class="-bottom-[30vmax] -left-[24vmax]"></span><span class="-bottom-[30vmax] -right-[24vmax]"></span>
+  </div>
+  <div class="stage relative z-[2] -top-10 w-[min(520px,86vw)] aspect-[400/260]">
+    <svg class="pitch-lines absolute inset-0 size-full" viewBox="0 0 400 260" preserveAspectRatio="none">
+      <rect x="2" y="2" width="396" height="256" rx="4"/><line x1="200" y1="2" x2="200" y2="258"/>
+      <circle cx="200" cy="130" r="48"/><rect x="2" y="70" width="52" height="120"/><rect x="346" y="70" width="52" height="120"/>
+    </svg>
+    <div class="lball absolute left-1/2 top-1/2 w-[13%]"><svg viewBox="0 0 100 100"><use href="#ball"/></svg></div>
+    <div class="kick absolute inset-x-0 top-full mt-3.5 text-center font-display text-[clamp(2.6rem,9vw,5.2rem)] leading-none tracking-[.04em]">KICK<span class="text-brand-red">·</span>OFF</div>
+  </div>
+  <div class="skip absolute bottom-5.5 right-6 z-[3] text-xs tracking-[.18em] uppercase text-muted">Tap to skip ›</div>
+</div>
+
+<!-- =========== SECTION TRANSITION OVERLAY =========== -->
+<div id="wipe" class="fixed inset-0 z-[150] pointer-events-none grid place-items-center bg-stripes before:absolute before:inset-y-0 before:left-1/2 before:w-[3px] before:bg-chalk/80 before:content-['']" aria-hidden="true">
+  <div class="absolute w-[min(300px,60vw)] aspect-square rounded-full border-[3px] border-chalk/80"></div>
+  <div class="label relative font-display text-[clamp(2.4rem,8vw,5rem)] tracking-[.05em] uppercase bg-night px-5.5 py-1 rounded-lg">Shop</div>
+  <svg class="absolute -right-8.5 top-[calc(50%-34px)] size-17 animate-[spin_.55s_linear_infinite]" viewBox="0 0 100 100"><use href="#ball"/></svg>
+</div>
+
+<!-- =========== SCROLL PROGRESS (ball on a touchline) =========== -->
+<div id="progress" class="fixed inset-x-0 top-0 z-[120] h-1 bg-chalk/10">
+  <div class="bar h-full w-0 bg-gradient-to-r from-pitch2 to-brand-yellow"></div>
+  <svg class="pb absolute -top-1.5 left-0 size-4 -translate-x-1/2" viewBox="0 0 100 100"><use href="#ball"/></svg>
+</div>
+
+<!-- =========== HEADER =========== -->
+<header id="top" class="fixed inset-x-0 top-1 z-[110] transition-all duration-300">
+  <div class="bar mx-auto flex w-[min(1180px,92vw)] items-center justify-between py-4.5 transition-all duration-300">
+    <a href="#home" data-go class="group flex items-center gap-2.5 font-display text-[1.6rem] tracking-[.04em]">
+      <svg class="size-8.5 transition-transform duration-700 group-hover:rotate-360" viewBox="0 0 100 100"><use href="#ball"/></svg>KICKOFF
+      <small class="font-body text-[.62rem] font-bold tracking-widest bg-brand-red px-1.5 py-0.5 rounded">BD</small>
+    </a>
+    <nav id="nav" class="max-[860px]:fixed max-[860px]:inset-0 max-[860px]:-z-10 max-[860px]:grid max-[860px]:place-items-center max-[860px]:bg-night/95">
+      <ul class="flex gap-7 max-[860px]:flex-col max-[860px]:items-center max-[860px]:gap-6.5
+                 [&_a]:relative [&_a]:py-1.5 [&_a]:text-[.92rem] [&_a]:font-semibold [&_a]:text-muted [&_a]:transition-colors [&_a:hover]:text-chalk
+                 [&_a]:after:absolute [&_a]:after:left-0 [&_a]:after:right-full [&_a]:after:bottom-0 [&_a]:after:h-0.5 [&_a]:after:bg-brand-yellow [&_a]:after:transition-all [&_a]:after:content-[''] [&_a:hover]:after:right-0
+                 max-[860px]:[&_a]:font-display max-[860px]:[&_a]:text-4xl max-[860px]:[&_a]:text-chalk max-[860px]:[&_a]:tracking-[.04em]">
+        <li><a class="nav-link" href="#home" data-go>Home</a></li>
+        <li><a class="nav-link" href="#shop" data-go>Shop</a></li>
+        <li><a class="nav-link" href="#custom" data-go>Custom Kit</a></li>
+        <li><a class="nav-link" href="#team" data-go>Team Offer</a></li>
+        <li><a class="nav-link" href="#reviews" data-go>Reviews</a></li>
+        <li><a class="nav-link" href="#faq" data-go>FAQ</a></li>
+        <li><a class="nav-link" href="#visit" data-go>Visit</a></li>
+      </ul>
+    </nav>
+    <div class="flex items-center gap-3">
+      <a class="btn btn-red wa-link !px-5 !py-2.5 text-sm max-[860px]:!hidden" href="#" data-msg="Hi KICKOFF BD! I'd like to place an order."><svg><use href="#wa"/></svg>Order Now</a>
+      <button id="burger" class="burger relative hidden size-11 rounded-xl border border-line max-[860px]:block *:absolute *:inset-x-3 *:h-0.5 *:bg-chalk *:transition" aria-label="Open menu">
+        <span class="top-[15px]"></span><span class="top-[21px]"></span><span class="top-[27px]"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<!-- =========== HERO =========== -->
+<section id="home" class="relative flex min-h-svh items-center overflow-hidden bg-stadium pt-35 pb-22 max-[860px]:pt-27">
+  <svg class="pointer-events-none absolute inset-0 size-full opacity-15" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" fill="none" stroke="#fff" stroke-width="3">
+    <line x1="720" y1="0" x2="720" y2="900"/><circle cx="720" cy="470" r="150"/><circle cx="720" cy="470" r="6" fill="#fff"/>
+    <rect x="-2" y="250" width="230" height="440"/><rect x="1212" y="250" width="230" height="440"/>
+  </svg>
+  <div class="relative mx-auto grid w-[min(1180px,92vw)] items-center gap-10 md:grid-cols-[1.1fr_.9fr]">
+    <div>
+      <span class="inline-flex items-center gap-2.5 rounded-full border border-line bg-chalk/10 py-2 pl-2 pr-3.5 text-sm font-semibold">
+        <b class="rounded-full bg-brand-yellow px-2.5 py-0.5 text-[.72rem] tracking-widest text-neutral-900">NEW</b> 2026–27 season kits just landed
+      </span>
+      <h1 class="my-5 font-display text-[clamp(3.1rem,8.4vw,7.2rem)] leading-[.92] uppercase">
+        <span class="hero-line block overflow-hidden"><span>Wear the</span></span>
+        <span class="hero-line block overflow-hidden"><span class="text-stroke">game.</span></span>
+        <span class="hero-line block overflow-hidden"><span>Live the <span class="text-brand-red">passion.</span></span></span>
+      </h1>
+      <p class="mb-2.5 font-bangla text-xl font-semibold text-brand-yellow">মাঠের জন্য, ফ্যানের জন্য — সারা দেশে ডেলিভারি</p>
+      <p class="lead mb-7.5">Jerseys, boots and match gear for every football fan in Bangladesh. Print your name and number, kit out your whole squad, and get it delivered to any of the 64 districts — pay cash when it arrives.</p>
+      <div class="flex flex-wrap gap-3.5">
+        <a class="btn btn-red wa-link" href="#" data-msg="Hi KICKOFF BD! I want to order a jersey."><svg><use href="#wa"/></svg>Order on WhatsApp</a>
+        <a class="btn btn-ghost" href="#shop" data-go>Browse the kits →</a>
+      </div>
+      <div class="mt-8.5 flex flex-wrap gap-5.5 text-sm font-semibold text-muted [&_svg]:size-4.5 [&_svg]:text-brand-yellow [&>span]:flex [&>span]:items-center [&>span]:gap-2">
+        <span><svg><use href="#check"/></svg>Cash on delivery</span>
+        <span><svg><use href="#check"/></svg>Name &amp; number printing</span>
+        <span><svg><use href="#check"/></svg>Easy size exchange</span>
+      </div>
+    </div>
+    <div class="relative mx-auto aspect-square w-full max-w-[520px] max-md:order-first max-md:-my-4 max-md:max-w-[290px]">
+      <div class="absolute inset-[12%] rounded-full bg-[radial-gradient(circle,rgb(255_51_72/.35),transparent_65%)] blur-md"></div>
+      <div id="heroJersey" class="absolute inset-[6%_10%_14%] animate-float drop-shadow-[0_30px_40px_rgb(0_0_0/.55)]"></div>
+      <div class="absolute right-[5%] bottom-[3%] h-[3%] w-[18%] rounded-full bg-black/55 blur-sm animate-ball-shadow"></div>
+      <div class="absolute right-[2%] bottom-[8%] w-[24%] animate-bounce-ball"><svg class="animate-spin-slow" viewBox="0 0 100 100"><use href="#ball"/></svg></div>
+      <div class="absolute left-0 top-[10%] -rotate-4 rounded-xl border-2 border-[#1d2a24] bg-[#050c09] px-3.5 py-2.5 shadow-[0_20px_40px_-10px_rgb(0_0_0/.6)] max-sm:top-[2%] max-sm:scale-85 max-sm:origin-top-left">
+        <div class="flex items-baseline gap-3.5">
+          <span class="font-display text-4xl leading-none text-brand-yellow led-glow" data-count="64">0</span>
+          <span class="text-[.66rem] font-bold uppercase leading-tight tracking-[.16em] text-muted">Districts<br>we deliver to</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="#why" data-go class="absolute bottom-6.5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[.7rem] uppercase tracking-[.2em] text-muted md:flex">
+    <i class="relative h-8.5 w-5.5 rounded-xl border-2 border-muted after:absolute after:left-1/2 after:top-1.5 after:-ml-[3px] after:size-1.5 after:rounded-full after:bg-brand-yellow after:animate-cue after:content-['']"></i>Scroll
+  </a>
+</section>
+
+<!-- =========== LED TICKER =========== -->
+<div class="overflow-hidden border-y-[3px] border-[#1b1b1b] bg-[#050505] py-3.5" aria-hidden="true">
+  <div class="flex w-max animate-marquee [&>span]:flex [&>span]:items-center [&>span]:gap-7 [&>span]:whitespace-nowrap [&>span]:px-7 [&>span]:font-display [&>span]:text-2xl [&>span]:tracking-[.08em] [&>span]:text-brand-yellow [&>span]:led-glow [&>span]:after:text-base [&>span]:after:content-['⚽']">
+    <span>Cash on delivery in all 64 districts</span><span>Custom name &amp; number printing</span><span>Squad deals for 11+ kits</span><span>Boots · Balls · Gloves · Shin guards</span><span>Dhaka delivery in 1–2 days</span>
+    <span>Cash on delivery in all 64 districts</span><span>Custom name &amp; number printing</span><span>Squad deals for 11+ kits</span><span>Boots · Balls · Gloves · Shin guards</span><span>Dhaka delivery in 1–2 days</span>
+  </div>
+</div>
+
+<!-- =========== WHY US =========== -->
+<section id="why" class="py-20 md:py-28">
+  <div class="mx-auto w-[min(1180px,92vw)]">
+    <span class="eyebrow reveal">Why fans choose us</span>
+    <h2 class="title reveal delay-75">Built by a fan,<br><em>for the fans.</em></h2>
+    <p class="lead reveal delay-150">We live for matchday too. That's why every kit we sell is one we'd wear to the stadium ourselves — and why ordering from anywhere in the country is as easy as sending a message.</p>
+    <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4
+                [&>div]:relative [&>div]:overflow-hidden [&>div]:rounded-[18px] [&>div]:border [&>div]:border-line [&>div]:bg-gradient-to-b [&>div]:from-card [&>div]:to-card/40 [&>div]:p-7 [&>div]:transition [&>div]:duration-300 hover:[&>div]:-translate-y-1.5 hover:[&>div]:border-brand-yellow/50
+                [&_i]:mb-4.5 [&_i]:grid [&_i]:size-13.5 [&_i]:place-items-center [&_i]:rounded-2xl [&_i]:bg-brand-yellow/10 [&_i]:text-brand-yellow [&_i_svg]:size-7
+                [&_h3]:mb-2 [&_h3]:text-lg [&_h3]:font-bold [&_p]:text-[.94rem] [&_p]:text-muted
+                [&_b]:absolute [&_b]:right-3.5 [&_b]:top-1.5 [&_b]:font-display [&_b]:text-6xl [&_b]:font-normal [&_b]:text-chalk/5">
+      <div class="reveal delay-75"><b>01</b><i><svg><use href="#truck"/></svg></i><h3>Nationwide delivery</h3><p>From Teknaf to Tetulia — we ship to all 64 districts. Check your kit, then pay cash on delivery.</p></div>
+      <div class="reveal delay-150"><b>02</b><i><svg><use href="#shirt"/></svg></i><h3>Your name, your number</h3><p>Heat-pressed name and number printing, done in-house and ready within 24–48 hours.</p></div>
+      <div class="reveal delay-225"><b>03</b><i><svg><use href="#medal"/></svg></i><h3>Matchday quality</h3><p>Breathable fabric that survives a full 90 minutes and a hundred washes. Every item is labelled fan, player or premium grade.</p></div>
+      <div class="reveal delay-300"><b>04</b><i><svg><use href="#team"/></svg></i><h3>Team &amp; club kits</h3><p>Full sets for school teams, office leagues and local clubs, with numbers and logos printed for the whole squad.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== SHOP (cards are built from the PRODUCTS list in the script) =========== -->
+<section id="shop" class="bg-gradient-to-b from-night to-night2 py-20 md:py-28">
+  <div class="mx-auto w-[min(1180px,92vw)]">
+    <div class="flex flex-wrap items-end justify-between gap-7.5">
+      <div>
+        <span class="eyebrow reveal">The kit room</span>
+        <h2 class="title reveal delay-75">Pick your <em>kit.</em></h2>
+        <p class="lead reveal delay-150">Tap the red button on any item to order it straight on WhatsApp.</p>
+      </div>
+      <div id="filters" class="reveal delay-150 flex flex-wrap gap-2 rounded-full border border-line bg-chalk/5 p-1.5 [&>button]:rounded-full [&>button]:px-4.5 [&>button]:py-2 [&>button]:text-sm [&>button]:font-semibold [&>button]:text-muted [&>button]:transition">
+        <button class="filter on" data-f="all">All</button>
+        <button class="filter" data-f="jersey">Jerseys</button>
+        <button class="filter" data-f="boots">Boots</button>
+        <button class="filter" data-f="gear">Gear</button>
+      </div>
+    </div>
+    <div id="products" class="mt-10 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4"></div>
+  </div>
+</section>
+
+<!-- =========== CUSTOM KIT BUILDER =========== -->
+<section id="custom" class="overflow-hidden py-20 md:py-28">
+  <div class="mx-auto w-[min(1180px,92vw)]">
+    <span class="eyebrow reveal">Make it yours</span>
+    <h2 class="title reveal delay-75">Design your <em>own jersey.</em></h2>
+    <p class="lead reveal delay-150">Choose a colour, add your name and lucky number, and see it come to life. When it looks right, send it to us in one tap.</p>
+    <div class="mt-5 grid items-center gap-12 md:grid-cols-2">
+      <div class="reveal relative mx-auto grid aspect-square w-full max-w-[480px] place-items-center rounded-[28px] border border-line bg-[radial-gradient(circle_at_50%_45%,rgb(255_255_240/.14),transparent_60%),repeating-linear-gradient(90deg,#0a3f2a_0_60px,#0c4a31_60px_120px)]">
+        <span class="absolute left-4 top-4 text-[.7rem] font-bold tracking-[.16em] text-muted">BACK VIEW · LIVE PREVIEW</span>
+        <div id="kitSvg" class="w-[78%] drop-shadow-[0_24px_30px_rgb(0_0_0/.5)]"></div>
+      </div>
+      <div class="reveal delay-75 flex flex-col gap-6 [&_label]:mb-2.5 [&_label]:block [&_label]:text-xs [&_label]:font-bold [&_label]:uppercase [&_label]:tracking-[.14em] [&_label]:text-muted">
+        <div>
+          <label>1 · Kit colour</label>
+          <!-- EDIT HERE: jersey colour choices (data-c1 = main, data-c2 = accent, data-t = text colour) -->
+          <div id="swatches" class="flex flex-wrap gap-3 [&>button]:size-11.5 [&>button]:rounded-full [&>button]:border-[3px] [&>button]:border-transparent [&>button]:outline-2 [&>button]:outline-line [&>button]:transition">
+            <button class="swatch on bg-[linear-gradient(135deg,#006a4e_50%,#f42a41_50%)]" data-c1="#006a4e" data-c2="#f42a41" data-t="#ffffff" data-name="Green & Red" aria-label="Green and red"></button>
+            <button class="swatch bg-[linear-gradient(135deg,#74b9ea_50%,#fff_50%)]" data-c1="#74b9ea" data-c2="#ffffff" data-t="#0b2a4a" data-name="Sky Blue" aria-label="Sky blue"></button>
+            <button class="swatch bg-[linear-gradient(135deg,#ffd23f_50%,#0a8a4a_50%)]" data-c1="#ffd23f" data-c2="#0a8a4a" data-t="#0a4a2a" data-name="Yellow & Green" aria-label="Yellow and green"></button>
+            <button class="swatch bg-[linear-gradient(135deg,#c8102e_50%,#111_50%)]" data-c1="#c8102e" data-c2="#111111" data-t="#ffffff" data-name="Red & Black" aria-label="Red and black"></button>
+            <button class="swatch bg-[linear-gradient(135deg,#111_50%,#d4a537_50%)]" data-c1="#111111" data-c2="#d4a537" data-t="#d4a537" data-name="Black & Gold" aria-label="Black and gold"></button>
+            <button class="swatch bg-[linear-gradient(135deg,#f5f3ea_50%,#1a3a8a_50%)]" data-c1="#f5f3ea" data-c2="#1a3a8a" data-t="#1a3a8a" data-name="White & Navy" aria-label="White and navy"></button>
+          </div>
+        </div>
+        <div>
+          <label for="kName">2 · Name &amp; number</label>
+          <div class="flex gap-3.5 max-sm:flex-col [&>input]:w-full [&>input]:rounded-xl [&>input]:border [&>input]:border-line [&>input]:bg-chalk/5 [&>input]:px-4 [&>input]:py-3.5 [&>input]:font-semibold [&>input]:uppercase [&>input]:tracking-wider [&>input]:outline-none [&>input]:transition focus:[&>input]:border-brand-yellow">
+            <input id="kName" maxlength="12" value="RAHIM" placeholder="YOUR NAME" autocomplete="off">
+            <input id="kNum" class="sm:max-w-28" maxlength="2" value="10" inputmode="numeric" placeholder="No.">
+          </div>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-5 rounded-[18px] border border-dashed border-brand-yellow/45 bg-brand-yellow/10 px-5.5 py-5">
+          <div><small class="block text-xs text-muted">Jersey + name &amp; number printing</small><span id="kitPrice" class="font-display text-3xl leading-none">৳900</span></div>
+          <a id="kitOrder" class="btn btn-red" href="#" target="_blank" rel="noopener"><svg><use href="#wa"/></svg>Send my design</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== TEAM OFFER =========== -->
+<section id="team" class="pt-5 pb-20 md:pb-28">
+  <div class="mx-auto w-[min(1180px,92vw)]">
+    <div class="reveal relative grid items-center gap-7.5 overflow-hidden rounded-[28px] bg-offer px-6 py-10 sm:px-9 sm:py-12 lg:grid-cols-[1.4fr_1fr] lg:px-14 lg:py-15
+                before:absolute before:inset-0 before:bg-[repeating-linear-gradient(-45deg,rgb(255_255_255/.06)_0_18px,transparent_18px_36px)] before:content-[''] [&>*]:relative">
+      <div>
+        <span class="eyebrow !text-white before:!bg-white">Squad deal</span>
+        <h2 class="mt-3 font-display text-[clamp(2.2rem,5vw,3.8rem)] leading-none uppercase">Kit out the whole<br>team &amp; save big.</h2>
+        <p class="my-3.5 mb-6.5 max-w-lg text-[1.05rem] text-[#fff3f0]">Order 11 or more kits for your school, office or para team and get printing for every player on us.</p>
+        <ul class="grid gap-2.5 [&>li]:flex [&>li]:items-center [&>li]:gap-2.5 [&>li]:rounded-xl [&>li]:bg-black/20 [&>li]:px-4 [&>li]:py-3 [&>li]:font-semibold [&_svg]:size-5 [&_svg]:flex-none [&_svg]:text-brand-yellow">
+          <li><svg><use href="#check"/></svg>Jersey + shorts + socks for every player</li>
+          <li><svg><use href="#check"/></svg>Free name, number &amp; team logo printing</li>
+          <li><svg><use href="#check"/></svg>Free captain's armband with every squad order</li>
+        </ul>
+      </div>
+      <div class="text-center">
+        <div class="font-display text-[clamp(4rem,10vw,7rem)] leading-[.9] [&>small]:my-1.5 [&>small]:block [&>small]:font-body [&>small]:text-sm [&>small]:font-bold [&>small]:uppercase [&>small]:tracking-[.18em]">
+          <small>From</small>৳1,100<small>per full set · 11+ kits</small>
+        </div>
+        <a class="btn wa-link mt-6 bg-brand-yellow text-neutral-900" href="#" data-msg="Hi KICKOFF BD! I want a squad deal for my team. Number of players: __"><svg><use href="#wa"/></svg>Get a team quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== HOW TO ORDER =========== -->
+<section id="how" class="py-20 text-center md:py-28">
+  <div class="mx-auto w-[min(1180px,92vw)]">
+    <span class="eyebrow reveal">Ordering from anywhere</span>
+    <h2 class="title reveal delay-75">Three passes <em>to goal.</em></h2>
+    <p class="lead reveal delay-150 mx-auto">No account, no card needed. Order from home in any district, or walk into the shop.</p>
+    <div class="relative mt-14 grid gap-6 md:grid-cols-3
+                [&_.step]:grid [&_.step]:grid-cols-[72px_1fr] [&_.step]:items-center [&_.step]:gap-4 [&_.step]:text-left md:[&_.step]:block md:[&_.step]:text-center
+                [&_.dot]:relative [&_.dot]:z-[1] [&_.dot]:grid [&_.dot]:size-18 [&_.dot]:place-items-center [&_.dot]:rounded-full [&_.dot]:border-[3px] [&_.dot]:bg-night [&_.dot]:font-display [&_.dot]:text-3xl md:[&_.dot]:mx-auto md:[&_.dot]:mb-5 md:[&_.dot]:size-22 md:[&_.dot]:text-[2.4rem]
+                [&_h3]:mb-2 [&_h3]:text-lg [&_h3]:font-bold [&_p]:text-[.95rem] [&_p]:text-muted md:[&_p]:mx-auto md:[&_p]:max-w-[300px]">
+      <div class="absolute inset-x-[16%] top-11 hidden border-t-[3px] border-dashed border-chalk/25 md:block">
+        <i class="absolute -top-[11px] size-4.5 animate-pass"><svg viewBox="0 0 100 100"><use href="#ball"/></svg></i>
+      </div>
+      <div class="step reveal delay-75"><div class="dot border-chalk">1</div><div><h3>Pick your kit</h3><p>Browse the kits here or on our Facebook page, and note your size.</p></div></div>
+      <div class="step reveal delay-150"><div class="dot border-brand-yellow text-brand-yellow">2</div><div><h3>Message us</h3><p>Send the item, size, name &amp; number and your address on WhatsApp or Messenger.</p></div></div>
+      <div class="step reveal delay-225"><div class="dot border-brand-red text-brand-red">3</div><div><h3>Goal! Pay on delivery</h3><p>We confirm by phone and ship. Check your kit at the door, then pay cash.</p></div></div>
+    </div>
+    <!-- EDIT HERE: delivery charges & times -->
+    <div class="mt-14 grid gap-4 md:grid-cols-3 [&>div]:flex [&>div]:items-center [&>div]:justify-between [&>div]:gap-2.5 [&>div]:rounded-2xl [&>div]:border [&>div]:border-line [&>div]:bg-chalk/[.03] [&>div]:px-5 [&>div]:py-4.5 [&>div]:text-left [&_span]:text-[.92rem] [&_span]:text-muted [&_b]:whitespace-nowrap [&_b]:font-display [&_b]:text-2xl [&_b]:font-normal [&_b]:text-brand-yellow">
+      <div class="reveal delay-75"><span>Inside Dhaka<br><small>1–2 days</small></span><b>৳70</b></div>
+      <div class="reveal delay-150"><span>Outside Dhaka<br><small>2–4 days</small></span><b>৳130</b></div>
+      <div class="reveal delay-225"><span>Squad orders<br><small>11+ kits</small></span><b>FREE</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== REVIEWS =========== -->
+<!-- EDIT HERE: replace these sample reviews with REAL customer feedback (with permission) before publishing -->
+<section id="reviews" class="bg-gradient-to-b from-night2 to-night py-20 md:py-28">
+  <div class="mx-auto w-[min(1180px,92vw)]">
+    <span class="eyebrow reveal">From the stands</span>
+    <h2 class="title reveal delay-75">What fans <em>are saying.</em></h2>
+    <div class="mt-11 grid gap-5 sm:grid-cols-2 lg:grid-cols-3
+                [&>div]:relative [&>div]:flex [&>div]:flex-col [&>div]:gap-4 [&>div]:rounded-[18px] [&>div]:border [&>div]:border-line [&>div]:bg-card [&>div]:p-7
+                [&>div]:before:absolute [&>div]:before:right-5 [&>div]:before:top-1 [&>div]:before:font-display [&>div]:before:text-7xl [&>div]:before:leading-none [&>div]:before:text-brand-red/25 [&>div]:before:content-['“']
+                [&_.stars]:tracking-[3px] [&_.stars]:text-brand-yellow
+                [&_.av]:grid [&_.av]:size-11 [&_.av]:place-items-center [&_.av]:rounded-full [&_.av]:bg-pitch2 [&_.av]:font-bold
+                [&_.sample]:mt-0.5 [&_.sample]:inline-block [&_.sample]:rounded-md [&_.sample]:border [&_.sample]:border-dashed [&_.sample]:border-brand-yellow/50 [&_.sample]:px-1.5 [&_.sample]:text-[.66rem] [&_.sample]:font-bold [&_.sample]:uppercase [&_.sample]:tracking-widest [&_.sample]:text-brand-yellow">
+      <div class="reveal delay-75"><div class="stars">★★★★★</div><p>Replace this with a real review from a customer — for example, what they ordered, how fast it arrived and how the print held up.</p>
+        <div class="mt-auto flex items-center gap-3"><span class="av">C1</span><div><b class="block text-[.95rem]">Customer name</b><small class="text-muted">City / district</small><br><span class="sample">Sample — replace</span></div></div></div>
+      <div class="reveal delay-150"><div class="stars">★★★★★</div><p>Paste a second real review here. Screenshots of happy Facebook or WhatsApp messages are a great source — just ask the customer first.</p>
+        <div class="mt-auto flex items-center gap-3"><span class="av">C2</span><div><b class="block text-[.95rem]">Customer name</b><small class="text-muted">City / district</small><br><span class="sample">Sample — replace</span></div></div></div>
+      <div class="reveal delay-225"><div class="stars">★★★★★</div><p>A team captain's review works well here — e.g. about a squad order with names and numbers for the whole team.</p>
+        <div class="mt-auto flex items-center gap-3"><span class="av">C3</span><div><b class="block text-[.95rem]">Customer name</b><small class="text-muted">Team / club name</small><br><span class="sample">Sample — replace</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== FAQ =========== -->
+<section id="faq" class="py-20 md:py-28">
+  <div class="mx-auto grid w-[min(1180px,92vw)] items-start gap-5 md:grid-cols-[.8fr_1.2fr] md:gap-15">
+    <div>
+      <span class="eyebrow reveal">Questions</span>
+      <h2 class="title reveal delay-75">Before you <em>kick off.</em></h2>
+      <p class="lead reveal delay-150">Can't find your answer? Message us — we usually reply within the hour during shop hours.</p>
+    </div>
+    <div id="faqList" class="reveal delay-150 border-t border-line
+                [&_.qa]:border-b [&_.qa]:border-line
+                [&_button]:flex [&_button]:w-full [&_button]:items-center [&_button]:justify-between [&_button]:gap-5 [&_button]:py-5.5 [&_button]:text-left [&_button]:text-[1.05rem] [&_button]:font-semibold
+                [&_.ans>div]:overflow-hidden [&_.ans_p]:pb-5.5 [&_.ans_p]:text-muted md:[&_.ans_p]:pr-12">
+      <div class="qa open"><button>Do you deliver outside Dhaka?<i class="qa-icon"></i></button><div class="ans"><div><p>Yes — we deliver to all 64 districts by courier. Inside Dhaka takes 1–2 days; outside Dhaka takes 2–4 days.</p></div></div></div>
+      <div class="qa"><button>Can I pay cash on delivery?<i class="qa-icon"></i></button><div class="ans"><div><p>Yes. Check your order when it arrives and pay the delivery person in cash. bKash and Nagad are also accepted.</p></div></div></div>
+      <div class="qa"><button>How do I find my size?<i class="qa-icon"></i></button><div class="ans"><div><p>Send us your height and weight and we'll recommend a size. Fan-grade jerseys fit regular; player-grade jerseys fit slim, so size up if you're between sizes.</p></div></div></div>
+      <div class="qa"><button>What if the size is wrong?<i class="qa-icon"></i></button><div class="ans"><div><p>Unworn, unprinted items can be exchanged for another size within 3 days of delivery. Printed jerseys are made to order, so please double-check spelling and size before confirming.</p></div></div></div>
+      <div class="qa"><button>How long does name &amp; number printing take?<i class="qa-icon"></i></button><div class="ans"><div><p>Usually 24–48 hours before dispatch. Squad orders with logos can take 3–5 days depending on quantity.</p></div></div></div>
+      <div class="qa"><button>Are your jerseys original brand products?<i class="qa-icon"></i></button><div class="ans"><div><p>Every item is clearly labelled as fan grade, player grade or premium so you know exactly what you're buying. Ask us for close-up photos of any item before you order.</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- =========== VISIT / CONTACT =========== -->
+<!-- EDIT HERE: phone, address, hours, Facebook link -->
+<section id="visit" class="pt-5 pb-20 md:pb-28">
+  <div class="mx-auto w-[min(1180px,92vw)]">
+    <div class="reveal relative overflow-hidden rounded-[32px] bg-stripes px-5 py-18 text-center sm:px-7.5 sm:py-22
+                before:absolute before:left-1/2 before:top-1/2 before:size-85 before:-translate-1/2 before:rounded-full before:border-[3px] before:border-chalk/10 before:content-['']
+                after:absolute after:inset-y-0 after:left-1/2 after:w-[3px] after:bg-chalk/10 after:content-[''] [&>*]:relative [&>*]:z-[1]">
+      <h2 class="font-display text-[clamp(2.6rem,7vw,5.4rem)] leading-[.95] uppercase">Ready for<br>kick-off?</h2>
+      <p class="mx-auto mt-4 mb-7.5 max-w-xl text-[#e1ece6]">Order from anywhere in Bangladesh in one message — or come feel the fabric in the shop.</p>
+      <div class="flex flex-wrap justify-center gap-3.5">
+        <a class="btn btn-red wa-link" href="#" data-msg="Hi KICKOFF BD! I'd like to place an order."><svg><use href="#wa"/></svg>Order on WhatsApp</a>
+        <a class="btn btn-ghost tel-link" href="#"><svg><use href="#phone"/></svg>Call the shop</a>
+      </div>
+    </div>
+    <div class="mt-10 grid gap-7.5 md:grid-cols-2">
+      <div class="reveal delay-75 rounded-[18px] border border-line bg-card p-7.5">
+        <span class="eyebrow">Visit the shop</span>
+        <ul class="mt-4.5 grid gap-4.5 [&>li]:flex [&>li]:items-start [&>li]:gap-3.5 [&_svg]:mt-1 [&_svg]:size-5.5 [&_svg]:flex-none [&_svg]:text-brand-yellow [&_b]:block [&_span]:text-[.95rem] [&_span]:text-muted">
+          <li><svg><use href="#pin"/></svg><div><b>Address</b><span>[Shop no.], [Market name], [Area], Dhaka</span></div></li>
+          <li><svg><use href="#clock"/></svg><div><b>Open every day</b><span>10:00 AM – 9:00 PM · Friday from 3:00 PM</span></div></li>
+          <li><svg><use href="#phone"/></svg><div><b>Phone / WhatsApp</b><span>+880 1XXX-XXXXXX</span></div></li>
+          <li><svg><use href="#fb"/></svg><div><b>Facebook page</b><span>facebook.com/yourpage</span></div></li>
+        </ul>
+      </div>
+      <div class="reveal delay-150 relative min-h-80 overflow-hidden rounded-[18px] border border-line bg-[repeating-linear-gradient(0deg,#0a2419_0_38px,#0b291d_38px_40px)] [&_iframe]:absolute [&_iframe]:inset-0 [&_iframe]:size-full [&_iframe]:border-0">
+        <!-- EDIT HERE: paste your Google Maps embed <iframe> here (Google Maps → Share → Embed a map) -->
+        <div class="absolute left-1/2 top-[46%] -translate-x-1/2 -translate-y-full text-center">
+          <svg class="mx-auto size-11.5 animate-bounce text-brand-red"><use href="#pin"/></svg>
+          <small class="mt-3 block text-xs text-muted">Your Google Map goes here</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="border-t border-line pt-12 pb-28 text-sm text-muted">
+  <div class="mx-auto flex w-[min(1180px,92vw)] flex-wrap items-center justify-between gap-5">
+    <a href="#home" data-go class="flex items-center gap-2.5 font-display text-[1.6rem] tracking-[.04em] text-chalk">
+      <svg class="size-8.5" viewBox="0 0 100 100"><use href="#ball"/></svg>KICKOFF <small class="font-body text-[.62rem] font-bold tracking-widest bg-brand-red px-1.5 py-0.5 rounded">BD</small>
+    </a>
+    <span>© 2026 KICKOFF BD · Football sportswear for every fan in Bangladesh</span>
+    <div class="flex gap-2.5 [&>a]:grid [&>a]:size-10.5 [&>a]:place-items-center [&>a]:rounded-full [&>a]:border [&>a]:border-line [&>a]:transition hover:[&>a]:border-brand-red hover:[&>a]:bg-brand-red hover:[&>a]:text-white [&_svg]:size-4.5">
+      <a href="#" aria-label="Facebook"><svg><use href="#fb"/></svg></a>
+      <a href="#" aria-label="Instagram"><svg><use href="#ig"/></svg></a>
+      <a href="#" class="wa-link" data-msg="Hi KICKOFF BD!" aria-label="WhatsApp"><svg><use href="#wa"/></svg></a>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp (desktop) + sticky order bar (mobile) -->
+<a class="wa-link fixed right-5.5 bottom-5.5 z-[100] hidden size-15 place-items-center rounded-full bg-whatsapp shadow-[0_12px_30px_-6px_rgb(37_211_102/.6)] transition hover:scale-110 md:grid
+          after:absolute after:inset-0 after:rounded-full after:border-2 after:border-whatsapp after:animate-ping-slow after:content-['']"
+   href="#" data-msg="Hi KICKOFF BD! I'd like to place an order." aria-label="Chat on WhatsApp"><svg class="size-7.5 text-white"><use href="#wa"/></svg></a>
+<div id="mbar" class="fixed inset-x-3 bottom-3 z-[100] flex translate-y-[130%] gap-2.5 rounded-full border border-line bg-night/90 p-2 backdrop-blur-md transition-transform duration-500 md:hidden [&>a]:flex-1 [&>a]:!px-2.5 [&>a]:!py-3 [&>a]:text-sm">
+  <a class="btn btn-ghost tel-link" href="#"><svg><use href="#phone"/></svg>Call</a>
+  <a class="btn btn-red wa-link" href="#" data-msg="Hi KICKOFF BD! I'd like to place an order."><svg><use href="#wa"/></svg>Order now</a>
+</div>
+
+<style>
+  /* FAQ plus/minus icon (plain CSS — pseudo-element shapes) */
+  .qa-icon{flex:none;width:32px;height:32px;border-radius:50%;border:1px solid rgb(245 243 234 / .12);position:relative;transition:rotate .35s,background .35s,border-color .35s}
+  .qa-icon::before,.qa-icon::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;background:#f5f3ea;transform:translate(-50%,-50%)}
+  .qa-icon::after{transform:translate(-50%,-50%) rotate(90deg);transition:transform .35s}
+</style>
+
+<script>
+/* =========================================================
+   EDIT HERE: your WhatsApp / phone number (country code, no + or spaces)
+   ========================================================= */
+const WHATSAPP = "8801XXXXXXXXX";
+const PHONE    = "+8801XXXXXXXXX";
+const PRINT_PRICE = 150, JERSEY_PRICE = 750;
+
+/* =========================================================
+   EDIT HERE: products — the shop cards are built from this list
+   cat: jersey | boots | gear     kind: jersey | boot | ball | glove
+   ========================================================= */
+const PRODUCTS = [
+  { cat:'jersey', kind:'jersey', name:'Bangladesh Fan Jersey',     meta:'Fan grade · breathable mesh · S–XXL', price:750,  was:950, badge:'Best seller', hot:true, c1:'#006a4e', c2:'#f42a41', style:'band',    num:'10' },
+  { cat:'jersey', kind:'jersey', name:'Sky Stripes Home Kit',      meta:'Jersey + shorts set · player grade',   price:1250, badge:'Home kit',     c1:'#ffffff', c2:'#74b9ea', style:'stripes', num:'7',  text:'#0b2a4a' },
+  { cat:'jersey', kind:'jersey', name:'Black & Gold Player Jersey',meta:'Slim fit · heat-pressed badge',        price:1450, badge:'Player grade', c1:'#111111', c2:'#d4a537', style:'sash',    num:'9' },
+  { cat:'jersey', kind:'jersey', name:'Retro Yellow Classic',      meta:'Throwback collar · cotton blend',      price:990,  badge:'Retro',        c1:'#ffd23f', c2:'#0a8a4a', style:'collar',  num:'11', text:'#0b2a4a' },
+  { cat:'boots',  kind:'boot',   name:'Firm-Ground Strike Boots',  meta:'For grass pitches · sizes 39–45',      price:3200, badge:'New', hot:true, c1:'#ff3348', c2:'#111' },
+  { cat:'boots',  kind:'boot',   name:'Turf & Futsal Boots',       meta:'Rubber studs · indoor & turf',         price:2600, badge:'Turf / futsal',c1:'#f5f3ea', c2:'#0f5f3f', turf:true },
+  { cat:'gear',   kind:'ball',   name:'Match Football',            meta:'Size 5 · hand-stitched · all-weather',  price:1200, badge:'Size 5' },
+  { cat:'gear',   kind:'glove',  name:'Goalkeeper Gloves',         meta:'Latex grip · finger protection',       price:950,  badge:'Keeper' },
+];
+
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $ = (s, el=document) => el.querySelector(s);
+const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+const waUrl = msg => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
+const tk = n => '৳' + n.toLocaleString('en-IN');
+
+/* ---------- Jersey / boot / glove drawings ---------- */
+let uid = 0;
+function jerseySVG({c1, c2, style='plain', num='', name='', text='#fff', back=false}){
+  const id = 'j' + (++uid);
+  const body = "M62 22 L96 8 Q120 24 144 8 L178 22 L226 64 L198 96 L178 82 L178 232 L62 232 L62 82 L42 96 L14 64 Z";
+  let deco = '';
+  if(style==='stripes') for(let x=70;x<180;x+=26) deco += `<rect x="${x}" y="0" width="13" height="240" fill="${c2}"/>`;
+  if(style==='band')    deco = `<rect x="0" y="104" width="240" height="30" fill="${c2}"/><rect x="0" y="0" width="240" height="20" fill="${c2}" opacity=".0"/>`;
+  if(style==='sash')    deco = `<polygon points="40,40 90,0 230,180 230,240 200,240" fill="${c2}"/>`;
+  if(style==='collar')  deco = `<rect x="0" y="0" width="240" height="240" fill="url(#${id}g)" opacity=".25"/>`;
+  const sleeves = `<path d="M14 64 L42 96 L62 82 L62 50 Z M226 64 L198 96 L178 82 L178 50 Z" fill="${c2}" opacity="${style==='stripes'?0:.95}"/>`;
+  const collar = back
+    ? `<path d="M96 8 Q120 18 144 8" stroke="${c2}" stroke-width="8" fill="none"/>`
+    : `<path d="M96 8 Q120 40 144 8" stroke="${c2}" stroke-width="8" fill="none" stroke-linejoin="round"/>`;
+  const label = back
+    ? `<text x="120" y="78" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="${name.length>8?18:22}" letter-spacing="2" fill="${text}">${esc(name)}</text>
+       <text x="120" y="188" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="100" fill="${text}">${esc(num)}</text>`
+    : (num ? `<text x="120" y="190" text-anchor="middle" font-family="Anton,Impact,sans-serif" font-size="44" fill="${text}" opacity=".9">${esc(num)}</text>
+       <circle cx="150" cy="62" r="11" fill="none" stroke="${text}" stroke-width="3" opacity=".8"/>` : '');
+  return `<svg viewBox="0 0 240 240" aria-hidden="true"><defs><clipPath id="${id}"><path d="${body}"/></clipPath>
+    <linearGradient id="${id}g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></linearGradient>
+    <linearGradient id="${id}s" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".25"/><stop offset=".25" stop-color="#000" stop-opacity="0"/><stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient></defs>
+    <g clip-path="url(#${id})"><rect width="240" height="240" fill="${c1}"/>${deco}${sleeves}<rect width="240" height="240" fill="url(#${id}s)"/></g>
+    ${collar}${label}</svg>`;
+}
+function bootSVG(c1, c2, turf){
+  const studs = turf
+    ? Array.from({length:10},(_,i)=>`<rect x="${42+i*17}" y="128" width="9" height="6" rx="2" fill="${c2}"/>`).join('')
+    : [50,78,106,168,196].map(x=>`<path d="M${x} 128 l4 14 h8 l4 -14z" fill="${c2}"/>`).join('');
+  return `<svg viewBox="0 0 240 160" aria-hidden="true">
+    <path d="M22 112 Q20 74 58 64 L108 56 Q128 30 160 26 L178 28 Q184 60 204 74 Q230 88 228 112 Q226 128 206 128 L36 128 Q22 126 22 112Z" fill="${c1}"/>
+    <path d="M22 112 Q120 120 228 108 L228 116 Q226 128 206 128 L36 128 Q22 126 22 112Z" fill="${c2}"/>
+    <path d="M60 98 Q120 70 196 92" stroke="${c2}" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9"/>
+    <path d="M128 44 l18 6 M122 54 l20 6 M117 64 l20 6" stroke="${c2}" stroke-width="4" stroke-linecap="round" opacity=".7"/>
+    ${studs}</svg>`;
+}
+function gloveSVG(){
+  return `<svg viewBox="0 0 200 220" aria-hidden="true">
+    <path d="M52 120 V52 a12 12 0 0 1 24 0 V104 V36 a12 12 0 0 1 24 0 V102 V32 a12 12 0 0 1 24 0 V104 V46 a12 12 0 0 1 24 0 V140 Q148 176 116 186 L80 186 Q56 180 40 152 L18 116 a12 12 0 0 1 20 -14 Z" fill="#ff3348"/>
+    <path d="M60 52 V112 M88 40 V104 M112 36 V104 M136 50 V108" stroke="#7a0f1d" stroke-width="3" opacity=".5"/>
+    <rect x="66" y="178" width="70" height="34" rx="8" fill="#111"/><rect x="66" y="188" width="70" height="8" fill="#ffd23f"/></svg>`;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+/* ---------- Build product cards (Tailwind classes) ---------- */
+$('#products').innerHTML = PRODUCTS.map((p, i) => {
+  const art = p.kind==='jersey' ? jerseySVG({c1:p.c1, c2:p.c2, style:p.style, num:p.num, text:p.text||'#fff'})
+            : p.kind==='boot'   ? bootSVG(p.c1, p.c2, p.turf)
+            : p.kind==='glove'  ? gloveSVG()
+            : `<svg viewBox="0 0 100 100" class="!w-[52%]"><use href="#ball"/></svg>`;
+  const msg = `Hi! I want to order: ${p.name} (${tk(p.price)}).${p.kind==='ball'?'':' Size: __'}`;
+  return `<article class="product reveal delay-${(i%4)*75} group flex flex-col overflow-hidden rounded-[18px] border border-line bg-card transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-20px_rgb(0_0_0/.8)]" data-cat="${p.cat}">
+    <div class="relative grid aspect-[1/.9] place-items-center bg-stripes-sm [&>svg]:w-[64%] [&>svg]:transition-transform [&>svg]:duration-500 group-hover:[&>svg]:scale-110 group-hover:[&>svg]:-rotate-3">
+      <span class="absolute left-3 top-3 rounded-full border px-2.5 py-1 text-[.68rem] font-bold uppercase tracking-widest ${p.hot?'border-brand-red bg-brand-red':'border-line bg-night'}">${p.badge}</span>${art}
+    </div>
+    <div class="flex flex-1 flex-col gap-1.5 p-3 sm:p-4.5">
+      <h3 class="text-sm font-bold leading-snug sm:text-base">${esc(p.name)}</h3>
+      <span class="hidden text-[.82rem] text-muted sm:block">${esc(p.meta)}</span>
+      <div class="mt-auto flex items-center justify-between pt-3">
+        <span class="font-display text-xl sm:text-2xl">${tk(p.price)}${p.was?`<s class="ml-1.5 hidden font-body text-xs text-muted sm:inline">${tk(p.was)}</s>`:''}</span>
+        <a class="wa-link grid size-9 place-items-center rounded-full bg-brand-red transition hover:rotate-90 hover:scale-110 sm:size-10.5" href="#" data-msg="${esc(msg)}" aria-label="Order ${esc(p.name)}"><svg class="size-5"><use href="#plus"/></svg></a>
+      </div>
+    </div>
+  </article>`;
+}).join('');
+
+$('#heroJersey').innerHTML = jerseySVG({c1:'#006a4e', c2:'#f42a41', style:'band', num:'10'});
+
+/* ---------- WhatsApp & phone links ---------- */
+$$('.wa-link').forEach(a => { a.href = waUrl(a.dataset.msg || 'Hi KICKOFF BD!'); a.target = '_blank'; a.rel = 'noopener'; });
+$$('.tel-link').forEach(a => a.href = 'tel:' + PHONE);
+
+/* ---------- Opening animation ---------- */
+const loader = $('#loader');
+function finishLoader(){
+  if(loader.classList.contains('done')) return;
+  loader.classList.add('s1','s2','s3','done');
+  document.body.classList.remove('locked');
+  document.body.classList.add('ready');
+  setTimeout(()=>loader.classList.add('gone'), 950);
+  countUp();
+}
+if(reduce){ finishLoader(); }
+else{
+  requestAnimationFrame(()=>{
+    setTimeout(()=>loader.classList.add('s1'), 100);
+    setTimeout(()=>loader.classList.add('s2'), 450);
+    setTimeout(()=>loader.classList.add('s3'), 1650);
+    setTimeout(finishLoader, 2700);
+  });
+  loader.addEventListener('click', finishLoader);
+}
+
+/* ---------- Pitch-wipe section transition ---------- */
+const wipe = $('#wipe'), wipeLabel = $('.label', wipe);
+let busy = false;
+function goTo(hash){
+  const target = $(hash); if(!target) return;
+  closeMenu();
+  if(reduce || busy){ target.scrollIntoView(); return; }
+  busy = true;
+  const link = $(`#nav a[href="${hash}"]`);
+  wipeLabel.textContent = link ? link.textContent : 'Let\'s go';
+  wipe.classList.remove('out'); wipe.classList.add('in');
+  setTimeout(()=>{
+    document.documentElement.style.scrollBehavior = 'auto';
+    window.scrollTo(0, target.getBoundingClientRect().top + scrollY - (hash==='#home'?0:70));
+    document.documentElement.style.scrollBehavior = '';
+    wipe.classList.replace('in','out');
+  }, 650);
+  setTimeout(()=>{ wipe.classList.remove('out'); busy = false; }, 1250);
+  history.replaceState(null,'',hash);
+}
+$$('[data-go]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); goTo(a.getAttribute('href')); }));
+
+/* ---------- Mobile menu ---------- */
+const burger = $('#burger'), nav = $('#nav');
+function closeMenu(){ nav.classList.remove('open'); burger.classList.remove('open'); }
+burger.addEventListener('click', ()=>{ nav.classList.toggle('open'); burger.classList.toggle('open'); });
+
+/* ---------- Scroll: header, progress ball, active link, mobile bar ---------- */
+const header = $('#top'), bar = $('#progress .bar'), pb = $('#progress .pb'), mbar = $('#mbar');
+const secs = $$('main section[id]');
+function onScroll(){
+  const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+  const p = max>0 ? y/max : 0;
+  header.classList.toggle('scrolled', y > 30);
+  bar.style.width = (p*100)+'%';
+  pb.style.left = (p*100)+'%';
+  pb.style.rotate = (y/2)+'deg';
+  mbar.classList.toggle('show', y > innerHeight*0.6);
+  let cur = 'home';
+  secs.forEach(s => { if(s.getBoundingClientRect().top < innerHeight*0.4) cur = s.id; });
+  $$('.nav-link').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+}
+addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+/* ---------- Reveal on scroll ---------- */
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+$$('.reveal').forEach(el => io.observe(el));
+
+/* ---------- Scoreboard count-up ---------- */
+function countUp(){
+  $$('[data-count]').forEach(el => {
+    const end = +el.dataset.count, t0 = performance.now(), dur = 1400;
+    const tick = t => { const k = Math.min(1,(t-t0)/dur); el.textContent = Math.round(end*(1-Math.pow(1-k,3))); if(k<1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ---------- Product filter ---------- */
+$$('#filters .filter').forEach(b => b.addEventListener('click', () => {
+  $$('#filters .filter').forEach(x => x.classList.toggle('on', x===b));
+  const f = b.dataset.f;
+  $$('#products .product').forEach(p => {
+    const show = f==='all' || p.dataset.cat===f;
+    p.classList.toggle('hidden', !show);
+    if(show && !reduce) p.animate([{opacity:0, transform:'translateY(20px) scale(.97)'},{opacity:1, transform:'none'}], {duration:400, easing:'cubic-bezier(.2,.9,.2,1)'});
+  });
+}));
+
+/* ---------- Custom kit builder ---------- */
+let kit = {c1:'#006a4e', c2:'#f42a41', text:'#ffffff', colour:'Green & Red'};
+const kName = $('#kName'), kNum = $('#kNum'), kitBox = $('#kitSvg');
+function drawKit(){
+  const name = (kName.value || 'YOUR NAME').toUpperCase(), num = (kNum.value || '0').replace(/\D/g,'');
+  kitBox.innerHTML = jerseySVG({c1:kit.c1, c2:kit.c2, text:kit.text, back:true, name, num});
+  const price = JERSEY_PRICE + PRINT_PRICE;
+  $('#kitPrice').textContent = tk(price);
+  $('#kitOrder').href = waUrl(`Hi KICKOFF BD! I want a custom jersey:\nColour: ${kit.colour}\nName: ${name}\nNumber: ${num}\nSize: __\nPrice shown: ${tk(price)}`);
+}
+$$('#swatches .swatch').forEach(s => s.addEventListener('click', () => {
+  $$('#swatches .swatch').forEach(x => x.classList.toggle('on', x===s));
+  kit = {c1:s.dataset.c1, c2:s.dataset.c2, text:s.dataset.t, colour:s.dataset.name};
+  drawKit();
+  const svg = $('svg', kitBox); if(svg && !reduce) svg.animate([{transform:'rotateY(90deg)'},{transform:'rotateY(0)'}], {duration:450, easing:'cubic-bezier(.2,.9,.2,1)'});
+}));
+kNum.addEventListener('input', () => { kNum.value = kNum.value.replace(/\D/g,''); drawKit(); });
+kName.addEventListener('input', drawKit);
+drawKit();
+
+/* ---------- FAQ accordion ---------- */
+$$('.qa button').forEach(b => b.addEventListener('click', () => {
+  const qa = b.parentElement, open = qa.classList.contains('open');
+  $$('.qa').forEach(x => x.classList.remove('open'));
+  if(!open) qa.classList.add('open');
+}));
+</script>
+</body>
+</html>
